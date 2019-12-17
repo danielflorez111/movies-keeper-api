@@ -1,3 +1,4 @@
+require('./config/config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -11,7 +12,15 @@ app.get('/user', (req, res) => {
 
 app.post('/user', (req, res) => {
     let body = req.body;
-    res.json(body);
+
+    if (!body.name) {
+        res.status(400).json({
+            ok: false,
+            error: 'name is required'
+        });
+    } else {
+        res.json(body);
+    }
 });
 
 app.put('/user/:id', (req, res) => {
@@ -24,6 +33,6 @@ app.delete('/user/:id', (req, res) => {
     res.json({ id });
 });
 
-app.listen(3000, () => {
-    console.log('Listening on port: ', 3000);
+app.listen(process.env.PORT, () => {
+    console.log('Listening on port: ', process.env.PORT);
 });
