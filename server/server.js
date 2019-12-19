@@ -1,4 +1,5 @@
 require('./config/config');
+const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -6,31 +7,14 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/user', (req, res) => {
-    res.json('get user');
-});
+app.use(require('./routes/user'));
 
-app.post('/user', (req, res) => {
-    let body = req.body;
-
-    if (!body.name) {
-        res.status(400).json({
-            ok: false,
-            error: 'name is required'
-        });
-    } else {
-        res.json(body);
-    }
-});
-
-app.put('/user/:id', (req, res) => {
-    const id = req.params.id
-    res.json({ id });
-});
-
-app.delete('/user/:id', (req, res) => {
-    const id = req.params.id
-    res.json({ id });
+mongoose.connect('mongodb://localhost/movies', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, (err, res) => {
+    if (err) throw err
+    console.log('DB online');
 });
 
 app.listen(process.env.PORT, () => {
