@@ -1,12 +1,10 @@
-const express = require('express');
 const User = require('../models/user');
-const app = express();
 
-app.get('/user', (req, res) => {
+const getUser = (req, res, next) => {
     res.json('get user');
-});
+}
 
-app.post('/user', (req, res) => {
+const createUser = (req, res, next) => {
     const body = req.body;
 
     const user = new User({
@@ -29,16 +27,21 @@ app.post('/user', (req, res) => {
             user: userDB
         });
     });
-});
+};
 
-app.put('/user/:id', (req, res) => {
+const updateUser = (req, res, next) => {
     const id = req.params.id
     res.json({ id });
-});
+}
 
-app.delete('/user/:id', (req, res) => {
+const deleteUser = (req, res, next) => {
     const id = req.params.id
     res.json({ id });
-});
+}
 
-module.exports = app;
+module.exports = {
+    getUser,
+    createUser,
+    updateUser,
+    deleteUser
+}
